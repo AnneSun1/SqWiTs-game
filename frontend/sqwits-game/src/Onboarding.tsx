@@ -152,7 +152,6 @@ function Onboarding() {
               />
             </div>
 
-            {/* Multi choice consent form */}
             <div>
               <form className="max-w-md mt-8 space-y-6">
                 <div className="space-y-4">
@@ -178,10 +177,9 @@ function Onboarding() {
               </form>
             </div>
 
-            <button type="submit" onClick={handleSubmit} className="start-button w-full font-['Orbitron'] rounded-[20px]" disabled={!isFormComplete}>
+            <button type="submit" onClick={handleSubmit} className="start-button w-full font-['Orbitron'] disabled:bg-[#9ca3af] disabled:hover:bg-[#9ca3af]" disabled={!isFormComplete}>
               CONTINUE
             </button>
-          {/* </form> */}
           </div>
         </div>
       </main>
