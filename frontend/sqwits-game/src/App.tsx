@@ -5,6 +5,8 @@ import './App.css'
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'
 import Onboarding from './Onboarding'
 import Navbar from './components/Navbar'
+import Transition from './Transition'
+import Study from './Study'
 
 function App() {
   const navigate = useNavigate();
@@ -75,6 +77,8 @@ function AppWrapper() {
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/transition" element={<Transition />} />
+        <Route path="/study" element={<Study />} />
       </Routes>
     </Router>
   )
