@@ -1,5 +1,9 @@
 import { Circle, Triangle, Square } from 'lucide-react'
 import { useState } from 'react'
+import Navbar from './components/Navbar'
+// import { Button } from "@/components/ui/button"
+import { RadioGroup, RadioGroupItem, RadioGroupIndicator } from '@radix-ui/react-radio-group'
+import { Label } from '@radix-ui/react-label'
 
 function Onboarding() {
   const [formData, setFormData] = useState({
@@ -16,43 +20,34 @@ function Onboarding() {
     // Handle form submission here
   };
 
+  const [MultichoiceAnswers, setMultichoiceAnswers] = useState<{ [key: number]: string }>({})
+
+  const handleMultichoiceAnswerChange = (questionId: number, answer: string) => {
+    setMultichoiceAnswers(prev => ({ ...prev, [questionId]: answer }))
+  }
+
+  const handleMultichoiceSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log('Submitted answers:', MultichoiceAnswers)
+    // Here you would typically send the answers to a server
+    alert('Form submitted! Check console for answers.')
+  }
+
   return (
     <div className="app-container">
-      <nav className="nav-container">
-        <div className="nav-content">
-          <div className="nav-logo">
-            <Circle className="icon" />
-            <Triangle className="icon" />
-            <Square className="icon" />
-          </div>
-          <div className="nav-links">
-            <a href="/" className="nav-link">HOME</a>
-          </div>
-          <div className="nav-spacer" />
-        </div>
-      </nav>
+      <Navbar/>
 
       <main className="main-container">
         <div className="onboarding-container max-w-2xl mx-auto p-8">
           <h1 className="text-4xl font-bold mb-8 text-center">
-            <span className="title-gray">WELCOME TO THE</span>
-            <br />
-            <span className="title-pink">GAME</span>
+            <span className="title-gray font-['Orbitron']">WELCOME TO THE</span>
+            <span className="title-pink font-['Orbitron']">GAME</span>
+            <br/>
+            <p className="text-sm font-thin font-['Orbitron']">Before we begin, read over this contract:</p>
           </h1>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="form-group">
-              <label htmlFor="name" className="block text-lg mb-2">Name</label>
-              <input
-                type="text"
-                id="name"
-                className="w-full p-3 rounded-lg bg-white/10 border border-pink-500/30 text-white"
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                required
-              />
-            </div>
-
+          {/* <form onSubmit={handleSubmit} className="space-y-6"> */}
+          <div className="space-y-6">
             <div className="form-group">
               <label htmlFor="studySubject" className="block text-lg mb-2">What are you studying right now?</label>
               <input
@@ -65,7 +60,7 @@ function Onboarding() {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group Orbitron">
               <label htmlFor="funFact" className="block text-lg mb-2">Tell us a fun fact about you</label>
               <input
                 type="text"
@@ -106,11 +101,48 @@ function Onboarding() {
                 <option value="ex">Ex</option>
               </select>
             </div>
+            <div className="form-group">
+              <label htmlFor="name" className="block text-lg mb-2 font-['Orbitron']">Sign your name</label>
+              <input
+                type="text"
+                id="name"
+                className="w-full p-3 rounded-lg bg-white/10 border border-pink-500/30 text-white"
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                required
+              />
+            </div>
+            <div>
+              <form onSubmit={handleMultichoiceSubmit} className="max-w-md mx-auto mt-8 space-y-6">
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold">Do you consent to playing these games?</h2>
+                  <RadioGroup defaultValue="hi">
+                  {/* //   onValueChange={(value) => handleMultichoiceAnswerChange(0, value)}
+                  //   value={MultichoiceAnswers[0] || ''} */}
+                
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem style={{
+                          backgroundColor: 'white',
+                          width: '25px',
+                          height: '25px',
+                          borderRadius: '100%',
+                          boxShadow: '0 2px 10px var(--black-a7)',
+                        }} value='Yes'>
+                          <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-2 after:h-2 after:rounded-full after:bg-blue-500" />
+                        </RadioGroupItem>
+                        <Label >Yes</Label>
+                        
+                      </div>
+                  </RadioGroup>
+                </div>
+              </form>
+            </div>
 
-            <button type="submit" className="start-button w-full">
+            <button type="submit" className="start-button w-full font-[Orbitron']">
               CONTINUE
             </button>
-          </form>
+          {/* </form> */}
+          </div>
         </div>
       </main>
 

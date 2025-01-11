@@ -4,26 +4,14 @@ import aboutImage from './assets/about.png'
 import './App.css'
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'
 import Onboarding from './Onboarding'
+import Navbar from './components/Navbar'
 
 function App() {
   const navigate = useNavigate();
 
   return (
     <div className="app-container">
-      {/* Navigation */}
-      <nav className="nav-container">
-        <div className="nav-content">
-          <div className="nav-logo">
-            <Circle className="icon" />
-            <Triangle className="icon" />
-            <Square className="icon" />
-          </div>
-          <div className="nav-links">
-            <a href="/" className="nav-link">HOME</a>
-          </div>
-          <div className="nav-spacer" />
-        </div>
-      </nav>
+      <Navbar/>
 
       {/* Hero Section */}
       <main className="main-container">
