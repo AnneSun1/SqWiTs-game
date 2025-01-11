@@ -27,7 +27,7 @@
 }
 
 .icon {
-  width: 1.5rem;
+  width: rem;
   height: 1.5rem;
   color: rgb(236, 72, 153);
 }
@@ -149,6 +149,71 @@
   object-fit: contain;
   width: 100%;
   height: 100%;
+}
+
+/* Separator Line */
+.separator-line {
+  width: 100%;
+  height: 2px;
+  background-color: rgb(236, 72, 153);
+  margin: 4rem 0;
+}
+
+/* About Section */
+.about-section {
+  background-color: black;
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  padding: 0 1rem;
+}
+
+.about-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.about-description {
+  color: rgb(156, 163, 175);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.about-image-container {
+  position: relative;
+}
+
+.about-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image-container {
+    order: -1;
+  }
 }
 
 /* Background Gradient */
