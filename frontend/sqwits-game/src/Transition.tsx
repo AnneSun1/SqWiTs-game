@@ -46,7 +46,7 @@ export default function StudyTimer() {
       case 3:
         return 'from-pink-500/20 to-transparent'
       case 2:
-        return 'from-[#249f9c]/20 from-40% via-pink-500/20 via-60% to-transparent'
+        return 'from-[#808080]/20 to-transparent'
       case 1:
         return 'from-[#037a76]/20 to-transparent'
       default:
@@ -65,9 +65,7 @@ export default function StudyTimer() {
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 1.5, opacity: 0 }}
-              className={`text-[200px] font-bold font-['Orbitron'] ${
-                countDown === 3 ? 'text-pink-500' : 'text-[#037a76]'
-              }`}
+              className="text-[200px] font-bold text-white font-['Orbitron']"
             >
               {countDown}
             </motion.div>
@@ -85,7 +83,7 @@ export default function StudyTimer() {
               </div>
               <motion.button
                 onClick={() => window.location.href = '/study'}
-                className="px-6 py-3 bg-pink-500 hover:bg-pink-600 rounded-lg font-semibold transition-colors"
+                className="px-6 py-3 bg-[#249f9c] hover:bg-[#037a76] rounded-lg font-semibold transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -108,12 +106,8 @@ export default function StudyTimer() {
         </AnimatePresence>
       </div>
       
-      {/* Updated Background Gradient */}
-      <motion.div 
-        className={`fixed inset-0 bg-gradient-to-t pointer-events-none ${getBackgroundGradient(countDown)}`}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      />
+      {/* Background Gradient */}
+      <div className={`fixed inset-0 bg-gradient-to-t ${getBackgroundGradient(phase === 'countdown' ? countDown : 0)} pointer-events-none`} />
     </div>
   )
 }

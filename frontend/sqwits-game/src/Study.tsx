@@ -48,7 +48,7 @@ export default function StudyTimer() {
         </h1>
 
         {/* Timer Display */}
-        <div className="bg-[#2A2A2A]/50 rounded-xl p-12 shadow-lg shadow-purple-900/20 backdrop-blur-sm border border-pink-500/20">
+        <div className="bg-[#2A2A2A]/50 rounded-xl p-12 shadow-lg shadow-green-900/20 backdrop-blur-sm border border-green-500/20">
           <div className="text-9xl font-mono tracking-wider text-white">
             {formatTime(timeLeft)}
           </div>
@@ -56,7 +56,8 @@ export default function StudyTimer() {
       </div>
       
       {/* Add the background gradient */}
-      <div className="background-gradient" />
+      <div className="background-gradient" style={{ background: 'linear-gradient(to bottom, #000000 80%, rgba(3, 122, 118, 0.5)' }} />
+
     </div>
   )
 }
