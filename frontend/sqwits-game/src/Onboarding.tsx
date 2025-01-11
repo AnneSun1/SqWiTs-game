@@ -6,13 +6,8 @@ import { RadioGroup, RadioGroupItem, RadioGroupIndicator } from '@radix-ui/react
 
 function Onboarding() {
   const navigate = useNavigate()
-  const [isFormComplete, setIsFormComplete] = useState(true)
-
-  // useEffect(() => {
-  //   const allQuestionsAnswered = questions.every(question => answers[question.id])
-  //   setIsFormComplete(allQuestionsAnswered)
-  // }, [answers])
-
+  const [isFormComplete, setIsFormComplete] = useState(false)
+  const [hasConsent, setHasConsent] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     studySubject: '',
@@ -21,27 +16,31 @@ function Onboarding() {
     relation: ''
   });
 
+  useEffect(() => {
+    const allFieldsFilled = Object.values(formData).every((value) => (value !== '')); 
+    if (allFieldsFilled && hasConsent) {
+      setIsFormComplete(allFieldsFilled)
+    }
+
+  }, [formData, hasConsent])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
     navigate('/transition')
   };
 
-  const [MultichoiceAnswers, setMultichoiceAnswers] = useState<{ [key: number]: string }>({})
-
-  const handleMultichoiceAnswerChange = (questionId: number, answer: string) => {
-    setMultichoiceAnswers(prev => ({ ...prev, [questionId]: answer }))
-  }
-
-  const handleMultichoiceSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Submitted answers:', MultichoiceAnswers)
-    // Here you would typically send the answers to a server
-    alert('Form submitted! Check console for answers.')
+  const handleConsentChange = (value: string) => {
+    if (value === 'yes') {
+      setHasConsent(true)
+    } else {
+      setHasConsent(false)
+    }
   }
 
   return (
     <div className="app-container">
+
       <Navbar/>
 
       <main className="main-container">
@@ -53,12 +52,14 @@ function Onboarding() {
             <p className="text-xl">Before we begin, read over this contract:</p>
           </h1>
       
-            <h2 className="text-xl font-bold mb-8 font-['Orbitron']">
-              Clause 1: 
-              <p className="text-sm font-thin mb-[10px]">A player is not allowed to stop playing</p>
-              Clause 2:
-              <p className="text-sm font-thin mb-[10px]">A player is not allowed to touch their phone during the duration of the game</p>
-            </h2>
+          <h2 className="text-xl font-bold mb-8 font-['Orbitron']">
+            Clause 1: 
+            <p className="text-sm font-thin mb-[10px]">A player is not allowed to stop playing</p>
+            Clause 2:
+            <p className="text-sm font-thin mb-[10px]">A player is not allowed to touch their phone during the duration of the game</p>
+          </h2>
+
+
           {/* <form onSubmit={handleSubmit} className="space-y-6"> */}
           <div className="space-y-6">
             <div className="form-group">
@@ -97,30 +98,12 @@ function Onboarding() {
               />
             </div>
 
-            {/* <div className="form-group">
-              <label htmlFor="relation" className="block text-lg mb-2 font-['Orbitron']">What's their relation to you?</label>
-              <select
-                id="relation"
-                className="w-full p-3 rounded-lg bg-white/10 border border-pink-500/30 text-white"
-                value={formData.relation}
-                onChange={(e) => setFormData({...formData, relation: e.target.value})}
-                required
-              >
-                <option value="">Select an option</option>
-                <option value="boss">Boss</option>
-                <option value="teacher">Teacher</option>
-                <option value="crush">Crush</option>
-                <option value="enemy">Enemy</option>
-                <option value="ex">Ex</option>
-              </select>
-            </div> */}
-
             <div className='form-group'>
-              <form onSubmit={handleMultichoiceSubmit} className="max-w-md mt-8 space-y-6">
+              <form className="max-w-md mt-8 space-y-6">
                 <div className="space-y-4">
                   <h2 className="text-lg font-thin font-['Orbitron']">What is their relation to you?</h2>
                   
-                  <RadioGroup defaultValue="">
+                  <RadioGroup defaultValue="" onValueChange={(value) => setFormData({...formData, relation: value})}>
                     <div className="flex items-center space-x-2 ">
               
                         <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='boss' id='boss'>
@@ -171,23 +154,21 @@ function Onboarding() {
 
             {/* Multi choice consent form */}
             <div>
-              <form onSubmit={handleMultichoiceSubmit} className="max-w-md mt-8 space-y-6">
+              <form className="max-w-md mt-8 space-y-6">
                 <div className="space-y-4">
                   <h2 className="text-lg font-thin font-['Orbitron'] text-[#ec4899]">Do you consent to playing these games?</h2>
                   
-                  <RadioGroup defaultValue="">
-                  {/* //   onValueChange={(value) => handleMultichoiceAnswerChange(0, value)}
-                  //   value={MultichoiceAnswers[0] || ''} */}
+                  <RadioGroup defaultValue="" onValueChange={(value) => handleConsentChange(value)}>
                 
                     <div className="flex items-center space-x-2">
               
-                        <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='No' id='no'>
+                        <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='no' id='no'>
                             <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black" />
                         </RadioGroupItem>
                         <label className="font-['Orbitron']" htmlFor='no'>No</label>
                       </div>
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='Yes' id='yes'>
+                          <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='yes' id='yes'>
                             <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black" />
                           </RadioGroupItem>
                           <label className="font-['Orbitron']" htmlFor='yes'>Yes</label>
