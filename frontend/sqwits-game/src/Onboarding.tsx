@@ -4,8 +4,11 @@ import Navbar from './components/Navbar'
 // import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem, RadioGroupIndicator } from '@radix-ui/react-radio-group'
 import { Label } from '@radix-ui/react-label'
+import { useNavigate } from 'react-router-dom'
 
 function Onboarding() {
+  const navigate = useNavigate()
+
   const [formData, setFormData] = useState({
     name: '',
     studySubject: '',
@@ -17,7 +20,7 @@ function Onboarding() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
-    // Handle form submission here
+    navigate('/transition')
   };
 
   const [MultichoiceAnswers, setMultichoiceAnswers] = useState<{ [key: number]: string }>({})
@@ -138,7 +141,11 @@ function Onboarding() {
               </form>
             </div>
 
-            <button type="submit" className="start-button w-full font-[Orbitron']">
+            <button 
+              onClick={handleSubmit} 
+              type="submit" 
+              className="start-button w-full font-[Orbitron']"
+            >
               CONTINUE
             </button>
           {/* </form> */}
