@@ -14,14 +14,15 @@ function App() {
   return (
     <div className="app-container">
       <Navbar/>
-
+      
       {/* Hero Section */}
       <main className="main-container">
         <div className="hero-grid">
           <div className="hero-content">
+            <img src='/sqwits-game-logo-larger.png'></img>
             <h1 className="hero-title">
-              <span className="title-gray">LET THE</span>
-              <span className="title-pink">STUDYING BEGIN</span>
+              <span className="title-gray text-3xl md:text-4xl">LET THE</span>
+              <span className="title-pink text-3xl md:text-4xl">STUDYING BEGIN</span>
             </h1>
             
             <div className="hero-icons">
