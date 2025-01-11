@@ -11,7 +11,7 @@ def generate_email_content(recipient, name):
             "role": "system",
             "content": (
                 "Based on the recipients role, write them a one sentence embarassing email from the name. on how I checked"
-                "Make it squid game themed.  If you are my crush, make it a pick up line. Do not use their name."
+                "Make it squid game themed.  If you are my crush, make it a pick up line. Do not address them at the start."
             ),
         },
         {
