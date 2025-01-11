@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem, RadioGroupIndicator } from '@radix-ui/react
 
 function Onboarding() {
   const navigate = useNavigate()
-  const [isFormComplete, setIsFormComplete] = useState(false)
+  const [isFormComplete, setIsFormComplete] = useState(true)
 
   // useEffect(() => {
   //   const allQuestionsAnswered = questions.every(question => answers[question.id])
