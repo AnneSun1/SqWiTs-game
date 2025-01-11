@@ -1,3 +1,4 @@
+
 .app-container {
   min-height: 100vh;
   background-color: black;
@@ -16,6 +17,7 @@
   height: 4rem;
   display: flex;
   align-items: center;
+  font-family: "Orbitron";
 }
 
 .nav-logo {
@@ -91,6 +93,7 @@
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1;
+  font-family: "Orbitron";
 }
 
 @media (min-width: 768px) {
