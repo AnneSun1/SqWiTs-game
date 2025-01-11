@@ -41,7 +41,18 @@ export default function StudyTimer() {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
   }
 
-
+  const getBackgroundGradient = (count: number) => {
+    switch (count) {
+      case 3:
+        return 'from-pink-500/20 to-transparent'
+      case 2:
+        return 'from-[#249f9c]/20 from-40% via-pink-500/20 via-60% to-transparent'
+      case 1:
+        return 'from-[#037a76]/20 to-transparent'
+      default:
+        return 'from-[#037a76]/20 to-transparent'
+    }
+  }
 
   return (
     <div className="app-container">
@@ -54,7 +65,9 @@ export default function StudyTimer() {
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 1.5, opacity: 0 }}
-              className="text-[200px] font-bold text-pink-500 font-['Orbitron']"
+              className={`text-[200px] font-bold font-['Orbitron'] ${
+                countDown === 3 ? 'text-pink-500' : 'text-[#037a76]'
+              }`}
             >
               {countDown}
             </motion.div>
@@ -95,8 +108,12 @@ export default function StudyTimer() {
         </AnimatePresence>
       </div>
       
-      {/* Background Gradient */}
-      <div className="fixed inset-0 bg-gradient-to-t from-pink-500/20 to-transparent pointer-events-none" />
+      {/* Updated Background Gradient */}
+      <motion.div 
+        className={`fixed inset-0 bg-gradient-to-t pointer-events-none ${getBackgroundGradient(countDown)}`}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      />
     </div>
   )
 }
