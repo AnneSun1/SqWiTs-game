@@ -2,8 +2,12 @@ import { Circle, Triangle, Square } from 'lucide-react'
 import dollImage from './assets/doll.png'
 import aboutImage from './assets/about.png'
 import './App.css'
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'
+import Onboarding from './Onboarding'
 
 function App() {
+  const navigate = useNavigate();
+
   return (
     <div className="app-container">
       {/* Navigation */}
@@ -36,7 +40,7 @@ function App() {
               <Square className="hero-icon" />
             </div>
 
-            <button className="start-button">START NOW</button>
+            <button className="start-button" onClick={() => navigate('/onboarding')}>START NOW</button>
           </div>
 
           <div className="doll-container">
@@ -77,4 +81,15 @@ function App() {
   )
 }
 
-export default App
+function AppWrapper() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/onboarding" element={<Onboarding />} />
+      </Routes>
+    </Router>
+  )
+}
+
+export default AppWrapper
