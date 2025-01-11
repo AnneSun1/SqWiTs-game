@@ -1,13 +1,17 @@
 import { Circle, Triangle, Square } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
-// import { Button } from "@/components/ui/button"
-import { RadioGroup, RadioGroupItem, RadioGroupIndicator } from '@radix-ui/react-radio-group'
-import { Label } from '@radix-ui/react-label'
 import { useNavigate } from 'react-router-dom'
+import { RadioGroup, RadioGroupItem, RadioGroupIndicator } from '@radix-ui/react-radio-group'
 
 function Onboarding() {
   const navigate = useNavigate()
+  const [isFormComplete, setIsFormComplete] = useState(false)
+
+  // useEffect(() => {
+  //   const allQuestionsAnswered = questions.every(question => answers[question.id])
+  //   setIsFormComplete(allQuestionsAnswered)
+  // }, [answers])
 
   const [formData, setFormData] = useState({
     name: '',
@@ -42,17 +46,23 @@ function Onboarding() {
 
       <main className="main-container">
         <div className="onboarding-container max-w-2xl mx-auto p-8">
-          <h1 className="text-4xl font-bold mb-8 text-center">
-            <span className="title-gray font-['Orbitron']">WELCOME TO THE</span>
-            <span className="title-pink font-['Orbitron']">GAME</span>
+          <h1 className="text-4xl font-bold mb-8 text-center font-['Orbitron']">
+            <span className="title-gray">WELCOME TO THE</span>
+            <span className="title-pink">SQWiTs GAMES</span>
             <br/>
-            <p className="text-sm font-thin font-['Orbitron']">Before we begin, read over this contract:</p>
+            <p className="text-xl">Before we begin, read over this contract:</p>
           </h1>
-
+      
+            <h2 className="text-xl font-bold mb-8 font-['Orbitron']">
+              Clause 1: 
+              <p className="text-sm font-thin mb-[10px]">A player is not allowed to stop playing</p>
+              Clause 2:
+              <p className="text-sm font-thin mb-[10px]">A player is not allowed to touch their phone during the duration of the game</p>
+            </h2>
           {/* <form onSubmit={handleSubmit} className="space-y-6"> */}
           <div className="space-y-6">
             <div className="form-group">
-              <label htmlFor="studySubject" className="block text-lg mb-2">What are you studying right now?</label>
+              <label htmlFor="studySubject" className="block text-lg mb-2 font-['Orbitron']">What are you studying right now?</label>
               <input
                 type="text"
                 id="studySubject"
@@ -64,7 +74,7 @@ function Onboarding() {
             </div>
 
             <div className="form-group Orbitron">
-              <label htmlFor="funFact" className="block text-lg mb-2">Tell us a fun fact about you</label>
+              <label htmlFor="funFact" className="block text-lg mb-2 font-['Orbitron']">Tell us a fun fact about you</label>
               <input
                 type="text"
                 id="funFact"
@@ -76,7 +86,7 @@ function Onboarding() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email" className="block text-lg mb-2">What's the email of someone you do not want to email?</label>
+              <label htmlFor="email" className="block text-lg mb-2 font-['Orbitron']">What's the email of someone you do not want to email?</label>
               <input
                 type="email"
                 id="email"
@@ -87,8 +97,8 @@ function Onboarding() {
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="relation" className="block text-lg mb-2">What's their relation to you?</label>
+            {/* <div className="form-group">
+              <label htmlFor="relation" className="block text-lg mb-2 font-['Orbitron']">What's their relation to you?</label>
               <select
                 id="relation"
                 className="w-full p-3 rounded-lg bg-white/10 border border-pink-500/30 text-white"
@@ -103,7 +113,50 @@ function Onboarding() {
                 <option value="enemy">Enemy</option>
                 <option value="ex">Ex</option>
               </select>
+            </div> */}
+
+            <div className='form-group'>
+              <form onSubmit={handleMultichoiceSubmit} className="max-w-md mt-8 space-y-6">
+                <div className="space-y-4">
+                  <h2 className="text-lg font-thin font-['Orbitron']">What is their relation to you?</h2>
+                  
+                  <RadioGroup defaultValue="">
+                    <div className="flex items-center space-x-2 ">
+              
+                        <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='boss' id='boss'>
+                            <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black" />
+                        </RadioGroupItem>
+                        <label className="font-['Orbitron']" htmlFor='boss'>Boss</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='teacher' id='teacher'>
+                          <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black" />
+                        </RadioGroupItem>
+                        <label className="font-['Orbitron']" htmlFor='teacher'>Teacher</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='crush' id='crush'>
+                          <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black" />
+                        </RadioGroupItem>
+                        <label className="font-['Orbitron']" htmlFor='crush'>Crush</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='enemy' id='enemy'>
+                          <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black" />
+                        </RadioGroupItem>
+                        <label className="font-['Orbitron']" htmlFor='enemy'>Enemy</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='ex' id='ex'>
+                          <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black" />
+                        </RadioGroupItem>
+                        <label className="font-['Orbitron']" htmlFor='ex'>Ex</label>
+                      </div>
+                  </RadioGroup>
+                </div>
+              </form>
             </div>
+
             <div className="form-group">
               <label htmlFor="name" className="block text-lg mb-2 font-['Orbitron']">Sign your name</label>
               <input
@@ -115,37 +168,36 @@ function Onboarding() {
                 required
               />
             </div>
+
+            {/* Multi choice consent form */}
             <div>
-              <form onSubmit={handleMultichoiceSubmit} className="max-w-md mx-auto mt-8 space-y-6">
+              <form onSubmit={handleMultichoiceSubmit} className="max-w-md mt-8 space-y-6">
                 <div className="space-y-4">
-                  <h2 className="text-lg font-semibold">Do you consent to playing these games?</h2>
-                  <RadioGroup defaultValue="hi">
+                  <h2 className="text-lg font-thin font-['Orbitron'] text-[#ec4899]">Do you consent to playing these games?</h2>
+                  
+                  <RadioGroup defaultValue="">
                   {/* //   onValueChange={(value) => handleMultichoiceAnswerChange(0, value)}
                   //   value={MultichoiceAnswers[0] || ''} */}
                 
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem style={{
-                          backgroundColor: 'white',
-                          width: '25px',
-                          height: '25px',
-                          borderRadius: '100%',
-                          boxShadow: '0 2px 10px var(--black-a7)',
-                        }} value='Yes'>
-                          <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-2 after:h-2 after:rounded-full after:bg-blue-500" />
+              
+                        <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='No' id='no'>
+                            <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black" />
                         </RadioGroupItem>
-                        <Label >Yes</Label>
-                        
+                        <label className="font-['Orbitron']" htmlFor='no'>No</label>
                       </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='Yes' id='yes'>
+                            <RadioGroupIndicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black" />
+                          </RadioGroupItem>
+                          <label className="font-['Orbitron']" htmlFor='yes'>Yes</label>
+                        </div>
                   </RadioGroup>
                 </div>
               </form>
             </div>
 
-            <button 
-              onClick={handleSubmit} 
-              type="submit" 
-              className="start-button w-full font-[Orbitron']"
-            >
+            <button type="submit" onClick={handleSubmit} className="start-button w-full font-['Orbitron'] rounded-[20px]" disabled={!isFormComplete}>
               CONTINUE
             </button>
           {/* </form> */}
