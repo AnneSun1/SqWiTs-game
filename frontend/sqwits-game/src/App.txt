@@ -1,3 +1,4 @@
+
 .app-container {
   min-height: 100vh;
   background-color: black;
@@ -57,9 +58,6 @@
 
 /* Hero Section */
 .main-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
   max-width: 1280px;
   margin: 0 auto;
   padding: 3rem 1rem;
@@ -72,12 +70,16 @@
 }
 
 .hero-grid {
-  width: 100%;
+  padding-left: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  padding: 2rem;
   align-items: center;
+}
+
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .hero-content {
@@ -87,10 +89,10 @@
 }
 
 .hero-title {
-  font-size: 5rem;
+  font-size: 2.25rem;
   font-weight: 700;
   letter-spacing: -0.025em;
-  line-height: 1.1;
+  line-height: 1;
   font-family: "Orbitron";
 }
 
@@ -136,12 +138,8 @@
 
 .doll-container {
   position: relative;
-  height: calc(100vh - 4rem);
+  height: 500px;
   display: none;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  padding-left: 2rem;
 }
 
 @media (min-width: 768px) {
@@ -151,11 +149,9 @@
 }
 
 .doll-image {
-  width: auto;
-  height: 90%;
   object-fit: contain;
-  margin-bottom: 0;
-  margin-left: -1rem;
+  width: 100%;
+  height: 100%;
 }
 
 /* Separator Line */
@@ -168,9 +164,8 @@
 
 /* About Section */
 .about-section {
-  min-height: 100vh;
   background-color: black;
-  padding: 4rem 2rem;
+  padding: 4rem 0;
   position: relative;
   overflow: hidden;
 }
