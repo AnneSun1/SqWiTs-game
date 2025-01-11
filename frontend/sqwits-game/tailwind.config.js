@@ -13,6 +13,9 @@ export default {
         }
       }
     },
+    fontFamily: {
+      'Orbitron': ['Orbitron', 'Roboto'],
+    }
   },
   plugins: [],
 } 
