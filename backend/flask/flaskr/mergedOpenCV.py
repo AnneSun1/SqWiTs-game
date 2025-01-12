@@ -31,6 +31,7 @@ def yolo_detection():
     lives = 3
 
     phone_last_detected = False
+    buffer=0
     
     while True:
         ret, frame = cap.read()
@@ -57,13 +58,16 @@ def yolo_detection():
                     label_text = f'{label} {confidence:.2f}'
                     cv2.putText(frame, label_text, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                 elif mode == "cell phone":
-                    phone_detected = True
+                    if buffer==0:
+                        buffer=15
                     cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
                     label_text = f'{label} {confidence:.2f}'
                     cv2.putText(frame, label_text, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
-        if phone_detected and not phone_last_detected:
-            print("Phone detected")
+        if buffer>0:
+            buffer-=1
+
+        if buffer==14:
             phone_last_detected = True
             lives -= 1
             if (lives == 2):
@@ -78,10 +82,6 @@ def yolo_detection():
                 # height, width = 500, 1000
                 # image = cv2.imread(cv2.samples.EMPTY_IMAGE)
                 # cv2.putText(image, "GAME OVER", (50, 250), cv2.FONT_HERSHEY_SIMPLEX, 5, (0, 0, 255), 3)
-
-        if not phone_detected and phone_last_detected:
-            print("Phone no longer detected")
-            phone_last_detected = False
 
         if mode == "person" and person_count == 4:
             hold_person_message_until = time.time() + 2
