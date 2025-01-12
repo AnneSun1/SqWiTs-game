@@ -71,7 +71,7 @@ def yolo_detection():
             phone_last_detected = True
             lives -= 1
             if (lives == 2):
-                requests.post("http://127.0.0.1:5051/play-song")
+                requests.post("http://127.0.0.1:5051/generate-song")
             elif (lives == 1):
                 requests.post("http://127.0.0.1:5051/get-people")
                 text = "Press c and get 4 people on screen!"
