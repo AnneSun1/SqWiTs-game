@@ -7,6 +7,7 @@ import Onboarding from './Onboarding'
 import Navbar from './components/Navbar'
 import Transition from './Transition'
 import Study from './Study'
+import Fail from './fail'
 
 function App() {
   const navigate = useNavigate();
@@ -51,17 +52,18 @@ function App() {
           <div className="about-text">
             <h2 className="about-title">ABOUT</h2>
             <p className="about-description">
-              Study Game is the first productivity app to gamify your learning experience with a unique twist inspired by popular survival games.
+            Welcome to SQWiTs Game, the ultimate challenge for procrastinators and focus seekers alike.
             </p>
             <p className="about-description">
-              This app distinguishes itself by leveraging AI to create personalized study challenges and track your progress, making every study session an exciting adventure.
+            Inspired by high-stakes thrillers and infused with humor, SQWiTs Game transforms your productivity struggles into an engaging, game-like experience. With clever consequences, playful roasts, and light-hearted punishments, we’re here to keep you on track and out of distraction’s grasp.
             </p>
             <p className="about-description">
-              Upon reaching your daily goals, you'll unlock new achievements and rewards, keeping you motivated and engaged in your learning journey.
-            </p>
+            Your mission: survive the session without breaking the rules. With every distraction, you lose a life.
+            </p> 
             <p className="about-description">
-              Unlike most productivity apps that lack engagement, this project combines proven study techniques with game mechanics. Initially, you'll focus on completing daily challenges, then expand to weekly and monthly goals, making it a unique and dynamic approach to learning.
+            Can you stay focused, or will you face the music—literally? It’s time to put your phone down, sign the contract, and prove you’ve got what it takes to win the SQWiTs Games.
             </p>
+            
           </div>
         </div>
       </section>
@@ -80,6 +82,7 @@ function AppWrapper() {
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/transition" element={<Transition />} />
         <Route path="/study" element={<Study />} />
+        <Route path="/fail" element={<Fail />} />
       </Routes>
     </Router>
   )
