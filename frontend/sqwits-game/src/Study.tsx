@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import circleImage from './assets/circle.png'
 import squareImage from './assets/square.png'
 import triangleImage from './assets/triangle.png'
+import guardcircle from './assets/guardcircle.png'
+import guardsquare from './assets/guardsquare.png'
 
 function formatTime(time: number) {
   const minutes = Math.floor(time / 60)
@@ -13,6 +15,7 @@ export default function StudyTimer() {
   const [timeLeft, setTimeLeft] = useState(30 * 60)
   const [isRunning, setIsRunning] = useState(true)
   const [lives, setLives] = useState(3)
+  const [isChatActive, setIsChatActive] = useState(false)
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout
@@ -67,11 +70,58 @@ export default function StudyTimer() {
             </div>
           </div>
         </div>
+
+        {/* Guards and Text Box Section */}
+        <div className="flex items-center justify-center gap-8 mt-16">
+          <img 
+            src={guardcircle} 
+            alt="Guard Circle" 
+            className="w-28 h-28"
+          />
+          
+          <div className="bg-[#037a76]/20 rounded-xl p-8 shadow-lg shadow-green-900/20 backdrop-blur-sm border border-green-500/20 max-w-md">
+            <p className="text-white/80 text-center font-['Orbitron']">
+              Stay focused and maintain your study streak!
+            </p>
+          </div>
+
+          <img 
+            src={guardsquare} 
+            alt="Guard Square" 
+            className="w-28 h-28"
+          />
+        </div>
       </div>
       
       {/* Add the background gradient */}
       <div className="background-gradient" style={{ background: 'linear-gradient(to bottom, #000000 80%, rgba(3, 122, 118, 0.5)' }} />
 
+      {/* Chat Button */}
+      <button 
+        className="fixed bottom-8 left-8 bg-[#249f9c] hover:bg-[#037a76] text-white font-['Orbitron'] 
+                   px-6 py-3 rounded-full shadow-lg transition-all duration-300 
+                   flex items-center gap-2 z-50"
+        onClick={() => {
+          setIsChatActive((prev) => !prev)
+          console.log(isChatActive ? 'Stop button clicked' : 'Chat button clicked')
+        }}
+      >
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          className="h-6 w-6" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth={2} 
+            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" 
+          />
+        </svg>
+        {isChatActive ? 'Stop' : 'Chat with me'}
+      </button>
     </div>
   )
 }
