@@ -3,17 +3,80 @@ from openai import OpenAI, AsyncOpenAI
 from dotenv import load_dotenv
 
 from flask import Flask, request, jsonify
-from sendEmail import generate_and_send_email
+from flask_cors import CORS
 
+from email.message import EmailMessage
+import subprocess
+import smtplib
+from . import mergedOpenCV
 
 load_dotenv()
 
 client = OpenAI(
-  api_key=os.environ['OPENAI_API_KEY'],  # this is also the default, it can be omitted
+    api_key=os.environ.get("OPENAI_API_KEY")
 )
+
+def generate_email_content(recipient, name):
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "Based on the recipients role, write them a one sentence embarassing email from the name. on how I checked"
+                "Make it squid game themed.  If you are my crush, make it a pick up line. Do not address them at the start."
+            ),
+        },
+        {
+            "role": "user",
+            "content": "Write a cringey email to my {recipient}. This email is from {name}. Make it short and embarassing.",
+        },
+    ]
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=messages,
+        max_tokens=300,
+        temperature=0.8
+    )
+
+    return response.choices[0].message.content.strip()
+
+
+
+def send_email(recipient, subject, body):
+    try:
+        msg = EmailMessage()
+        msg['From'] = os.environ.get('MAIL_USERNAME')
+        msg['To'] = recipient
+        msg['Subject'] = subject
+        msg.set_content(body)
+
+        # connect to SMTP server
+        server = smtplib.SMTP(os.environ.get('MAIL_SERVER'), int(os.environ.get('MAIL_PORT', 587)))
+        server.starttls()
+        server.login(os.environ.get('MAIL_USERNAME'), os.environ.get('MAIL_PASSWORD'))
+        
+        server.send_message(msg)
+        server.quit()
+        return True
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return False
+    
+
+def generate_and_send_email(recipient_email, recipient_type, name):
+    email_subject = "An Important Message From " + name
+    email_body = generate_email_content(recipient_type, name)
+    email_body += "\nLove, " + name
+    if send_email(recipient_email, email_subject, email_body):
+        print("Email sent successfully")
+        return True
+    else:
+        print("Failed to send email")
+        return False
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+    CORS(app)
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
@@ -31,7 +94,7 @@ def create_app(test_config=None):
 
 
     @app.route("/send-email", methods=['POST'])
-    def home():
+    def send():
         data = request.get_json()
 
         name = data.get('name')
@@ -46,6 +109,14 @@ def create_app(test_config=None):
             return jsonify({"status": "success", "message": "Email sent", "data": data}), 200
 
         return jsonify({"status": "failure", "message": "Email sent", "data": data}), 400
+    
+    @app.route("/start", methods=['GET', 'POST'])
+    def start():
+        # if request.method == 'POST':
+        subprocess.run(["python3", "./flaskr/mergedOpenCV.py"])
+        print(f"posted")
+        
+        return("hello")
 
     @app.route("/", methods=['GET'])
     def main():
