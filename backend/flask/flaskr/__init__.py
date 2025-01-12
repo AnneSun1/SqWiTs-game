@@ -129,8 +129,6 @@ def create_app(test_config=None):
             text=True
         )
 
-        print(process.stdout)
-
         for line in process.stdout:
             socketio.emit('phone_detected',{'message': line.strip()})
             # if line.strip() == 'phone_detected': 
