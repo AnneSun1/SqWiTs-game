@@ -94,16 +94,9 @@ export default function StudyTimer() {
               <div className="text-5xl rgb(156, 163, 175); font-Orbitron">
                 Study for 30 minutes. Ready?
               </div>
-              {/* <motion.button
-                onClick={handleClick}
-                className="px-6 py-3 bg-pink-500 hover:bg-pink-600 rounded-lg font-semibold transition-colors"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              > */}
               <button onClick={handleClick}>
                 LET'S GO
               </button>
-              {/* </motion.button> */}
             </motion.div>
           )}
           {phase === 'timer' && (
