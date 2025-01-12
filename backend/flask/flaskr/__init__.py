@@ -1,14 +1,13 @@
 import os
 from openai import OpenAI, AsyncOpenAI
 from dotenv import load_dotenv
-
-from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask import Flask, request, jsonify
 
 from email.message import EmailMessage
 import subprocess
 import smtplib
-from . import mergedOpenCV
+# from . import mergedOpenCV
 
 load_dotenv()
 
@@ -76,11 +75,14 @@ def generate_and_send_email(recipient_email, recipient_type, name):
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    CORS(app)
+
+    
+
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
+    CORS(app)
     
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
