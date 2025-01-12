@@ -1,0 +1,7 @@
+YOLOv5 Path: /Users/annesun/Desktop/SheHacks/SqWiTs-game/backend/flask/yolov5
+YOLOv5 🚀 v7.0-394-g86fd1ab2 Python-3.8.10 torch-2.2.2 CPU
+
+Fusing layers... 
+[W NNPACK.cpp:64] Could not initialize NNPACK! Reason: Unsupported hardware.
+YOLOv5s summary: 213 layers, 7225885 parameters, 0 gradients, 16.4 GFLOPs
+Adding AutoShape... 

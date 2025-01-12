@@ -5,6 +5,7 @@ import triangleImage from './assets/triangle.png'
 import guardcircle from './assets/guardcircle.png'
 import guardsquare from './assets/guardsquare.png'
 import chatImage from './assets/chat.png'
+import { useSocket } from './SocketContext'
 
 function formatTime(time: number) {
   const minutes = Math.floor(time / 60)
@@ -29,8 +30,25 @@ export default function StudyTimer() {
     return () => clearInterval(intervalId)
   }, [isRunning, timeLeft])
 
-  const survivalProbability = 75; // Example probability value
+  const survivalProbability = 75;
 
+  // WEBSOCKET STUFF ----------------------------
+  const { socket } = useSocket(); 
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on('phone_detected', (data: { message: string }) => {
+      console.log('Phone detected:', data.message);
+      // delete a dalgona candy
+      // send a post request to the backend for the different steps
+    });
+
+    return () => {
+      socket.off('phone_detected');
+    };
+  }, [socket]);
+  // WEBSOCKET STUFF -------------------------------------
   return (
     <div className="app-container">
       <div className="relative z-10 flex flex-col items-center gap-24 w-full max-w-7xl mx-auto px-4 py-24">

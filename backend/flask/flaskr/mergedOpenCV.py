@@ -2,6 +2,7 @@ import cv2
 import torch
 import os
 import time
+import sys
 
 def yolo_detection():
     yolov5_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../yolov5'))
@@ -70,14 +71,18 @@ def yolo_detection():
             text_x = (width - text_size[0]) // 2
             text_y = height // 2
             cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+            sys.stdout.write("people_detected")
+            print("people_detected")
 
         if mode == "cell phone" and time.time() < hold_phone_message_until:
             text = "Phone Detected!"
             text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 3)[0]
             text_x = (width - text_size[0]) // 2
             text_y = height // 2
+            sys.stdout.write("phone_detected")
+            print("people_detected")
             cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-
+            
         cv2.putText(frame, f"Mode: {mode.capitalize()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
         cv2.imshow("YOLOv5 Real-Time Detection", frame)

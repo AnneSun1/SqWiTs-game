@@ -1,14 +1,16 @@
 import os
+from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
+
 from openai import OpenAI, AsyncOpenAI
 from dotenv import load_dotenv
-from flask_cors import CORS
-from flask import Flask, request, jsonify
-
 from email.message import EmailMessage
 import subprocess
 import smtplib
 # from . import mergedOpenCV
 from .databricksModelCall import predict_survival
+from threading import Thread
+from flask_socketio import SocketIO
 
 load_dotenv()
 
@@ -74,17 +76,22 @@ def generate_and_send_email(recipient_email, recipient_type, name):
         print("Failed to send email")
         return False
 
+
+
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-
-    
-
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+    CORS(app, origins=["http://localhost:5173"])
+    socketio = SocketIO(app, 
+        cors_allowed_origins="*",
+        # ping_timeout=60000,
+        # ping_interval=25000,
+        async_mode='threading'
     )
-    CORS(app)
+    socketio.init_app(app, cors_allowed_origins="http://localhost:5173")
+    # app.config['CORS_HEADERS'] = 'Content-Type'
+
     
+
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
     else:
@@ -97,6 +104,7 @@ def create_app(test_config=None):
 
 
     @app.route("/send-email", methods=['POST'])
+    @cross_origin()
     def send():
         data = request.get_json()
 
@@ -113,15 +121,51 @@ def create_app(test_config=None):
 
         return jsonify({"status": "failure", "message": "Email sent", "data": data}), 400
     
+    def monitor_process():
+        process = subprocess.Popen(
+            ["python3", "./flaskr/mergedOpenCV.py"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+
+        print(process.stdout)
+
+        for line in process.stdout:
+            socketio.emit('phone_detected',{'message': line.strip()})
+            # if line.strip() == 'phone_detected': 
+            #     socketio.emit('phone_detected', {'message': line.strip()})
+            # elif line.strip() == 'people_detected':
+            #     socketio.emit('people_detected')
+
+        process.communicate()
+
     @app.route("/start", methods=['GET', 'POST'])
+    @cross_origin()
     def start():
+        if request.method == 'GET':
+            print("Subprocess starts soon")
+            subprocess_thread = Thread(target=monitor_process)
+            subprocess_thread.daemon = True
+            subprocess_thread.start()
+
         # if request.method == 'POST':
-        subprocess.run(["python3", "./flaskr/mergedOpenCV.py"])
-        print(f"posted")
-        
-        return("hello")
+        return jsonify({"status": "started", "message": "Subprocess started in background"}), 200
+    
+    # @socketio.on('connect')
+    # def handle_connect():
+    #     print("A client has connected.")
+
+    # @socketio.on('disconnect')
+    # def handle_disconnect():
+    #     print("A client has disconnected.")
+
+    # @socketio.on('phone_detected')
+    # def handle_phone_detection():
+    #     print(f"Phone detected")
 
     @app.route("/", methods=['GET'])
+    @cross_origin()
     def main():
         return("Welcome")
     
