@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.5",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@vitejs/plugin-react": "latest",
@@ -33,7 +34,7 @@
     "globals": "^15.14.0",
     "postcss": "latest",
     "tailwindcss": "latest",
-    "typescript": "latest",
+    "typescript": "^5.7.3",
     "typescript-eslint": "^8.18.2",
     "vite": "latest"
   }

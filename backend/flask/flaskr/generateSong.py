@@ -53,11 +53,6 @@ def generate_song(lyrics):
     upload_dropbox(output, dropbox_destination)
     return True
 
-
-
-
-
-
 def generate_lyrics(name, subject):
     client = OpenAI(
         api_key=os.environ.get("OPENAI_API_KEY")

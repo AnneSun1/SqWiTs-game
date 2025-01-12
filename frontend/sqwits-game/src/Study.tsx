@@ -6,31 +6,46 @@ import guardcircle from './assets/guardcircle.png'
 import guardsquare from './assets/guardsquare.png'
 import chatImage from './assets/chat.png'
 import { useSocket } from './SocketContext'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
-function formatTime(time: number) {
-  const minutes = Math.floor(time / 60)
-  const seconds = time % 60
-  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-}
+// function formatTime(time: number) {
+//   const minutes = Math.floor(time / 60)
+//   const seconds = time % 60
+//   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+// }
 
 export default function StudyTimer() {
-  const [timeLeft, setTimeLeft] = useState(30 * 60)
+  const [timeLeft, setTimeLeft] = useState(30)
   const [isRunning, setIsRunning] = useState(true)
   const [lives, setLives] = useState(3)
   // const [isChatActive, setIsChatActive] = useState(false)
   const [isChatVisible, setIsChatVisible] = useState(false)
-
+  const [survivalProbability, setSurvivalProbability] = useState('...')
+  const navigate = useNavigate()
   useEffect(() => {
+    
     let intervalId: NodeJS.Timeout
     if (isRunning && timeLeft > 0) {
       intervalId = setInterval(() => {
         setTimeLeft((prevTime) => prevTime - 1)
       }, 1000)
     }
-    return () => clearInterval(intervalId)
-  }, [isRunning, timeLeft])
 
-  const survivalProbability = 75;
+    if (timeLeft === 0) {
+      setIsRunning(false)
+      navigate('/succeed')
+    }
+    
+    if (lives === 0) {
+      setIsRunning(false)
+      navigate('/fail')
+    }
+
+    return () => clearInterval(intervalId)
+  }, [isRunning, timeLeft, lives])
+
+
 
   // WEBSOCKET STUFF ----------------------------
   const { socket } = useSocket(); 
@@ -38,29 +53,47 @@ export default function StudyTimer() {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on('play-song', (data: { message: string }) => {
+    socket.on('song-generated', (data: { message: string }) => {
       console.log('Song played:', data.message);
-      setLives(lives - 1);
-      console.log("lives")
+      setLives((lives) => lives - 1);
+      console.log(lives)
+
     });
 
     socket.on('get-people', (data: {message: string}) => {
       console.log('People detected:', data.message)
-      setLives(lives - 1);
-      console.log("lives")
+      setLives((lives => lives - 1));
+      console.log(lives)
     } )
 
     socket.on('send-email', (data: {message: string}) => {
       console.log('Send Email:', data.message)
-      setLives(lives - 1);
-      console.log("lives")
+      setLives((lives) => lives -1);
+      console.log(lives)
     } )
 
     // return () => {
     //   socket.off('phone_detected');
     // };
-  }, [socket]);
+  }, [socket, lives]);
+
+
   // WEBSOCKET STUFF -------------------------------------
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await axios.post('http://127.0.0.1:5051/predict-survival');
+      setSurvivalProbability(response.data.probability)
+    }
+
+    getData();
+  })
+  
+  
+
+
+
+
   return (
     <div className="app-container">
       <div className="relative z-10 flex flex-col items-center gap-24 w-full max-w-7xl mx-auto px-4 py-24">
