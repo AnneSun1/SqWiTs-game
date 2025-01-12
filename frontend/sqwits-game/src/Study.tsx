@@ -29,6 +29,8 @@ export default function StudyTimer() {
     return () => clearInterval(intervalId)
   }, [isRunning, timeLeft])
 
+  const survivalProbability = 75; // Example probability value
+
   return (
     <div className="app-container">
       <div className="relative z-10 flex flex-col items-center gap-24 w-full max-w-7xl mx-auto px-4 py-24">
@@ -97,6 +99,14 @@ export default function StudyTimer() {
       
       {/* Add the background gradient */}
       <div className="background-gradient" style={{ background: 'linear-gradient(to bottom, #000000 80%, rgba(3, 122, 118, 0.5)' }} />
+
+      {/* Probability of Surviving Section */}
+      <div className="fixed bottom-8 right-8 bg-white p-4 rounded-lg shadow-lg border border-[#249f9c] bg-opacity-10">
+        <h2 className="text-white text-5xl font-normal text-center font-mono">
+          {survivalProbability}%
+        </h2>
+        <p className="text-white text-center font-['Orbitron']">SURVIVAL PROBABILITY</p>
+      </div>
 
       {/* Chat Button */}
       <button 
