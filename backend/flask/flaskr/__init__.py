@@ -8,6 +8,7 @@ from email.message import EmailMessage
 import subprocess
 import smtplib
 # from . import mergedOpenCV
+from .databricksModelCall import predict_survival
 
 load_dotenv()
 
@@ -123,5 +124,29 @@ def create_app(test_config=None):
     @app.route("/", methods=['GET'])
     def main():
         return("Welcome")
+    
+    @app.route("/predict-survival", methods=['POST'])
+    def get_survival_prediction():
+        try:
+            data = request.get_json()
+            
+            # Extract data from request
+            person_data = {
+                "age": 23,  # You can make this dynamic later
+                "university": "University of Waterloo",  # You can make this dynamic later
+                "exams_count": int(data.get('examsCount', 5)),
+                "gpa": float(data.get('gpa', 3.8))
+            }
+            
+            probability = predict_survival(person_data)
+            return jsonify({
+                "status": "success",
+                "probability": probability
+            }), 200
+        except Exception as e:
+            return jsonify({
+                "status": "error",
+                "message": str(e)
+            }), 400
     
     return app
