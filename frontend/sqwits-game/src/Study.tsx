@@ -7,6 +7,7 @@ import guardsquare from './assets/guardsquare.png'
 import chatImage from './assets/chat.png'
 import { useSocket } from './SocketContext'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 function formatTime(time: number) {
   const minutes = Math.floor(time / 60)
@@ -15,22 +16,34 @@ function formatTime(time: number) {
 }
 
 export default function StudyTimer() {
-  const [timeLeft, setTimeLeft] = useState(30 * 60)
+  const [timeLeft, setTimeLeft] = useState(30)
   const [isRunning, setIsRunning] = useState(true)
   const [lives, setLives] = useState(3)
   // const [isChatActive, setIsChatActive] = useState(false)
   const [isChatVisible, setIsChatVisible] = useState(false)
   const [survivalProbability, setSurvivalProbability] = useState('...')
-
+  const navigate = useNavigate()
   useEffect(() => {
+    
     let intervalId: NodeJS.Timeout
     if (isRunning && timeLeft > 0) {
       intervalId = setInterval(() => {
         setTimeLeft((prevTime) => prevTime - 1)
       }, 1000)
     }
+
+    if (timeLeft === 0) {
+      setIsRunning(false)
+      navigate('/succeed')
+    }
+    
+    if (lives === 0) {
+      setIsRunning(false)
+      navigate('/fail')
+    }
+
     return () => clearInterval(intervalId)
-  }, [isRunning, timeLeft])
+  }, [isRunning, timeLeft, lives])
 
 
 
@@ -42,27 +55,29 @@ export default function StudyTimer() {
 
     socket.on('song-generated', (data: { message: string }) => {
       console.log('Song played:', data.message);
-      setLives(lives - 1);
-      console.log("lives")
+      setLives((lives) => lives - 1);
+      console.log(lives)
 
     });
 
     socket.on('get-people', (data: {message: string}) => {
       console.log('People detected:', data.message)
-      setLives(lives - 1);
-      console.log("lives")
+      setLives((lives => lives - 1));
+      console.log(lives)
     } )
 
     socket.on('send-email', (data: {message: string}) => {
       console.log('Send Email:', data.message)
-      setLives(lives - 1);
-      console.log("lives")
+      setLives((lives) => lives -1);
+      console.log(lives)
     } )
 
     // return () => {
     //   socket.off('phone_detected');
     // };
-  }, [socket]);
+  }, [socket, lives]);
+
+
   // WEBSOCKET STUFF -------------------------------------
 
   useEffect(() => {
