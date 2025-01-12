@@ -8,6 +8,7 @@ import Navbar from './components/Navbar'
 import Transition from './Transition'
 import Study from './Study'
 import Fail from './fail'
+import Succeed from './succeed'
 
 function App() {
   const navigate = useNavigate();
@@ -83,6 +84,7 @@ function AppWrapper() {
         <Route path="/transition" element={<Transition />} />
         <Route path="/study" element={<Study />} />
         <Route path="/fail" element={<Fail />} />
+        <Route path="/succeed" element={<Succeed />} />
       </Routes>
     </Router>
   )

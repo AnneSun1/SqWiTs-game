@@ -13,7 +13,11 @@ function Onboarding() {
     studySubject: '',
     funFact: '',
     email: '',
-    recipient: ''
+    recipient: '',
+    university: '',
+    gpa: '',
+    examCount: '',
+    age: ''
   });
 
   useEffect(() => {
@@ -145,6 +149,54 @@ function Onboarding() {
                   </RadioGroup>
                 </div>
               </form>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="university" className="block text-lg mb-2 font-['Orbitron']">Your University</label>
+              <input
+                type="text"
+                id="university"
+                className="w-full p-3 rounded-lg bg-white/10 border border-pink-500/30 text-white"
+                value={formData.university}
+                onChange={(e) => setFormData({...formData, university: e.target.value})}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="gpa" className="block text-lg mb-2 font-['Orbitron']">Your GPA</label>
+              <input
+                type="text"
+                id="gpa"
+                className="w-full p-3 rounded-lg bg-white/10 border border-pink-500/30 text-white"
+                value={formData.gpa}
+                onChange={(e) => setFormData({...formData, gpa: e.target.value})}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="examCount" className="block text-lg mb-2 font-['Orbitron']">Number of Exams This Semester</label>
+              <input
+                type="number"
+                id="examCount"
+                className="w-full p-3 rounded-lg bg-white/10 border border-pink-500/30 text-white"
+                value={formData.examCount}
+                onChange={(e) => setFormData({...formData, examCount: e.target.value})}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="age" className="block text-lg mb-2 font-['Orbitron']">Your Age</label>
+              <input
+                type="number"
+                id="age"
+                className="w-full p-3 rounded-lg bg-white/10 border border-pink-500/30 text-white"
+                value={formData.age}
+                onChange={(e) => setFormData({...formData, age: e.target.value})}
+                required
+              />
             </div>
 
             <div className="form-group">
