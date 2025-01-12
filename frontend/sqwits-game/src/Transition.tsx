@@ -1,14 +1,27 @@
 'use client'
-
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function StudyTimer() {
+  const navigate = useNavigate()
   const [phase, setPhase] = useState<'countdown' | 'message' | 'timer'>('countdown')
   const [timeLeft, setTimeLeft] = useState(30 * 60) // 30 minutes in seconds
   const [countDown, setCountDown] = useState(3)
   const [lives, setLives] = useState(3)
+  
+  const startCamera = async () => {
+    const response = await axios.post('http://127.0.0.1:5000/start')
+    console.log("hi")
+    console.log(response.data)
+  }
 
+  const handleClick = () => {
+    startCamera();
+    navigate('/study')
+  }
+  
   useEffect(() => {
     let timer: NodeJS.Timeout
 
@@ -83,14 +96,16 @@ export default function StudyTimer() {
               <div className="text-5xl rgb(156, 163, 175); font-Orbitron">
                 STUDY FOR 30 MINUTES. READY?
               </div>
-              <motion.button
-                onClick={() => window.location.href = '/study'}
+              {/* <motion.button
+                onClick={handleClick}
                 className="px-6 py-3 bg-pink-500 hover:bg-pink-600 rounded-lg font-semibold transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-              >
+              > */}
+              <button onClick={handleClick}>
                 LET'S GO
-              </motion.button>
+              </button>
+              {/* </motion.button> */}
             </motion.div>
           )}
           {phase === 'timer' && (

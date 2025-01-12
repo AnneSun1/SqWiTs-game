@@ -29,10 +29,10 @@ def generate_and_send_email(recipient_email, recipient_type, name):
     email_body = generate_email_content(recipient_type, name)
     email_body += "\nLove, " + name
     if send_email(recipient_email, email_subject, email_body):
-        print("Email sent successfully")
+        print(f"Email sent successfully")
         return True
     else:
-        print("Failed to send email")
+        print(f"Failed to send email")
         return False
 
 if __name__ == '__main__':
