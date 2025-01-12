@@ -16,12 +16,13 @@ import { useNavigate } from 'react-router-dom'
 // }
 
 export default function StudyTimer() {
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(5*60)
   const [isRunning, setIsRunning] = useState(true)
   const [lives, setLives] = useState(3)
   // const [isChatActive, setIsChatActive] = useState(false)
   const [isChatVisible, setIsChatVisible] = useState(false)
-  const [survivalProbability, setSurvivalProbability] = useState('...')
+  const [survivalProbability, setSurvivalProbability] = useState('62.4')
+  
   const navigate = useNavigate()
   useEffect(() => {
     
@@ -47,6 +48,7 @@ export default function StudyTimer() {
 
 
 
+
   // WEBSOCKET STUFF ----------------------------
   const { socket } = useSocket(); 
 
@@ -54,6 +56,16 @@ export default function StudyTimer() {
     if (!socket) return;
 
     socket.on('song-generated', (data: { message: string }) => {
+      console.log('Song played:', data.message);
+      
+      const songUrl = 'https://www.dropbox.com/scl/fi/qmmi89o7s30btku9g9dcb/generated_song.mp3?rlkey=pshzpqdc2n23dxfepf885osnz&st=9dmef3mt&dl=1'; // Change dl=0 to dl=1
+      const audio = new Audio(songUrl);
+      audio.play().then(() => {
+        console.log('Playing song:', songUrl);
+      }).catch(err => {
+        console.error('Error playing song:', err);
+      });
+
       console.log('Song played:', data.message);
       setLives((lives) => lives - 1);
       console.log(lives)
@@ -90,15 +102,28 @@ export default function StudyTimer() {
   })
   
   
+  const playMusic = () => {
+    const songUrl = 'https://www.dropbox.com/scl/fi/qmmi89o7s30btku9g9dcb/generated_song.mp3?rlkey=pshzpqdc2n23dxfepf885osnz&st=9dmef3mt&dl=1'; // Change dl=0 to dl=1
+      const audio = new Audio(songUrl);
+      audio.play().then(() => {
+        console.log('Playing song:', songUrl);
+      }).catch(err => {
+        console.error('Error playing song:', err);
+      });
 
+  }
 
 
 
   return (
     <div className="app-container">
+      
       <div className="relative z-10 flex flex-col items-center gap-24 w-full max-w-7xl mx-auto px-4 py-24">
         {/* Lives Section */}
+        
         <div className="text-center">
+          <button className="absolute top-[0px] left-[40px] mt-12 px-8 py-3 bg-[#037a76] text-white rounded-lg 
+                     font-semibold transition-colors duration-200 shadow-lg font-['Orbitron']" onClick={playMusic}>Play Music</button>
           <h2 className="text-white text-3xl mb-6 font-['Orbitron']">Lives:</h2>
           <div className="flex gap-8">
             {Array.from({ length: 3 }, (_, i) => (

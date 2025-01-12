@@ -11,6 +11,8 @@ export default function StudyTimer() {
   const [countDown, setCountDown] = useState(3)
   const [lives, setLives] = useState(3)
   
+  
+  
   const startCamera = async () => {
     const response = await axios.get('http://127.0.0.1:5051/start')
     console.log("Camera started")

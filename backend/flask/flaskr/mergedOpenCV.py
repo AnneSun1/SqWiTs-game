@@ -75,11 +75,11 @@ def yolo_detection():
             elif (lives == 1):
                 requests.post("http://127.0.0.1:5051/get-people")
                 text = "Press c and get 4 people on screen!"
-
-                # cv2.putText(image, text, (50, 250), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 255), 3)
+                print(text)
+                cv2.putText(frame, text, (50, 250), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 255), 3)
             elif (lives == 0):
                 requests.post("http://127.0.0.1:5051/send-email")
-                # height, width = 500, 1000
+                height, width = 500, 1000
                 # image = cv2.imread(cv2.samples.EMPTY_IMAGE)
                 # cv2.putText(image, "GAME OVER", (50, 250), cv2.FONT_HERSHEY_SIMPLEX, 5, (0, 0, 255), 3)
 
