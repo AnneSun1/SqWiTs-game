@@ -4,6 +4,7 @@ import squareImage from './assets/square.png'
 import triangleImage from './assets/triangle.png'
 import guardcircle from './assets/guardcircle.png'
 import guardsquare from './assets/guardsquare.png'
+import chatImage from './assets/chat.png'
 
 function formatTime(time: number) {
   const minutes = Math.floor(time / 60)
@@ -16,6 +17,7 @@ export default function StudyTimer() {
   const [isRunning, setIsRunning] = useState(true)
   const [lives, setLives] = useState(3)
   const [isChatActive, setIsChatActive] = useState(false)
+  const [isChatVisible, setIsChatVisible] = useState(false)
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout
@@ -102,8 +104,8 @@ export default function StudyTimer() {
                    px-6 py-3 rounded-full shadow-lg transition-all duration-300 
                    flex items-center gap-2 z-50"
         onClick={() => {
-          setIsChatActive((prev) => !prev)
-          console.log(isChatActive ? 'Stop button clicked' : 'Chat button clicked')
+          setIsChatVisible((prev) => !prev)
+          console.log(isChatVisible ? 'Stop button clicked' : 'Chat button clicked')
         }}
       >
         <svg 
@@ -120,8 +122,20 @@ export default function StudyTimer() {
             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" 
           />
         </svg>
-        {isChatActive ? 'Stop' : 'Chat with me'}
+        {isChatVisible ? 'Stop' : 'Chat with me'}
       </button>
+
+      {/* Chat Image Popup */}
+      {isChatVisible && (
+        <div className="fixed bottom-20 left-8 z-50">
+          <img 
+            src={chatImage} 
+            alt="Chat" 
+            className="w-40 h-32.5" 
+            style={{ paddingBottom: '30px' }}
+          />
+        </div>
+      )}
     </div>
   )
 }
