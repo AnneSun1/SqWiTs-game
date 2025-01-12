@@ -13,7 +13,8 @@ from threading import Thread
 from flask_socketio import SocketIO
 
 load_dotenv()
-global email_data
+
+email_data = None
 
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY")
@@ -124,6 +125,7 @@ def create_app(test_config=None):
     
     @app.route("/submit-email-data", methods=['POST'])
     def submit():
+        global email_data
         data = request.get_json()
         email_data = data
         name = data.get('name')
@@ -139,8 +141,9 @@ def create_app(test_config=None):
     @app.route("/send-email", methods=['POST'])
     @cross_origin()
     def send():
+        global email_data
         socketio.emit('send-email', {'message': '-1 life, the email is sent'})
-        if generate_and_send_email(email_data.email, email_data.recipient, email_data.name):
+        if generate_and_send_email(email_data['email'], email_data['recipient'], email_data['name']):
             # return jsonify({"status": "success", "message": "Email sent", "data": data}), 200
             return("Email sent")
             
