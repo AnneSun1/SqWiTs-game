@@ -1,5 +1,9 @@
 import os
 from openai import OpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY")
@@ -29,10 +33,8 @@ def generate_email_content(recipient, name):
 
     return response.choices[0].message.content.strip()
 
-recipient = input("Who is the email for (crush, mom, professor)? ").strip().lower()
-
-name=input("Whats your name: ").strip().lower()
-
-email_content = generate_email_content(recipient, name)
-
-print(email_content)
+if __name__ == '__main__':
+    recipient = input("Who is the email for (crush, mom, professor)? ").strip().lower()
+    name = input("Whats your name: ").strip().lower()
+    email_content = generate_email_content(recipient, name)
+    print(email_content)
