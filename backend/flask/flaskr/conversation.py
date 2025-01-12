@@ -3,6 +3,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import pyttsx3
 import speech_recognition as sr
+import keyboard 
 
 load_dotenv()
 
@@ -35,10 +36,11 @@ def speak(text):
     engine.say(text)
     engine.runAndWait()
 
+
 def generate_ai_response(user_input):
     messages = [
         {"role": "system", "content": (
-            "You are a Squid Game guard. You are insanely mean. keep your answers short"
+            "You are a Squid Game guard. You are insanely mean. Keep your answers short."
         )},
         {"role": "user", "content": user_input},
     ]
@@ -58,7 +60,7 @@ def generate_ai_response(user_input):
 
 def chat_with_ai():
     print("Squid Game Guard AI (say 'exit' to quit)\n")
-    speak("What do you want player?")
+    speak("What do you want, player?")
 
     while True:
         user_input = recognize_speech()
@@ -78,5 +80,11 @@ def chat_with_ai():
 
         speak(ai_reply)
 
+
 if __name__ == "__main__":
-    chat_with_ai()
+    print("Press 't' to start chatting with the Squid Game Guard.")
+    while True:
+        if keyboard.is_pressed('t'): 
+            print("Starting conversation...")
+            chat_with_ai()
+            break
