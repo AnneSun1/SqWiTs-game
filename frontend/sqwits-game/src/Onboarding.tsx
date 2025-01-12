@@ -1,8 +1,8 @@
-import { Circle, Triangle, Square } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import { useNavigate } from 'react-router-dom'
 import { RadioGroup, RadioGroupItem, RadioGroupIndicator } from '@radix-ui/react-radio-group'
+import axios from 'axios'
 
 function Onboarding() {
   const navigate = useNavigate()
@@ -13,7 +13,7 @@ function Onboarding() {
     studySubject: '',
     funFact: '',
     email: '',
-    relation: ''
+    recipient: ''
   });
 
   useEffect(() => {
@@ -27,6 +27,7 @@ function Onboarding() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
+    uploadData();
     navigate('/transition')
   };
 
@@ -38,9 +39,13 @@ function Onboarding() {
     }
   }
 
+  const uploadData = async () => {
+    const response = await axios.post('http://127.0.0.1:5000/send_email', formData)
+    console.log(response.data)
+  }
+
   return (
     <div className="app-container">
-
       <Navbar/>
 
       <main className="main-container">
@@ -103,7 +108,7 @@ function Onboarding() {
                 <div className="space-y-4">
                   <h2 className="text-lg font-thin font-['Orbitron']">What is their relation to you?</h2>
                   
-                  <RadioGroup defaultValue="" onValueChange={(value) => setFormData({...formData, relation: value})}>
+                  <RadioGroup defaultValue="" onValueChange={(value) => setFormData({...formData, recipient: value})}>
                     <div className="flex items-center space-x-2 ">
               
                         <RadioGroupItem className="bg-white rounded-full w-[25px] h-[25px] mt-[2px] mb-[2px]" value='boss' id='boss'>
