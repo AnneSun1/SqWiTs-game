@@ -45,7 +45,7 @@ function Onboarding() {
   }
 
   const uploadData = async () => {
-    const response = await axios.post('http://127.0.0.1:5051/send-email', formData)
+    const response = await axios.post('http://127.0.0.1:5051/submit-email-data', formData)
     console.log(response.data)
   }
 

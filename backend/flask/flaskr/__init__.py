@@ -8,11 +8,12 @@ from email.message import EmailMessage
 import subprocess
 import smtplib
 # from . import mergedOpenCV
-from .databricksModelCall import predict_survival
+# from .databricksModelCall import predict_survival
 from threading import Thread
 from flask_socketio import SocketIO
 
 load_dotenv()
+global email_data
 
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY")
@@ -80,7 +81,7 @@ def generate_and_send_email(recipient_email, recipient_type, name):
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    CORS(app, origins=["http://localhost:5173"])
+    CORS(app)
     socketio = SocketIO(app, 
         cors_allowed_origins="*",
         # ping_timeout=60000,
@@ -102,25 +103,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-
-    @app.route("/send-email", methods=['POST'])
-    @cross_origin()
-    def send():
-        data = request.get_json()
-
-        name = data.get('name')
-        email=data.get('email')
-        fun_fact = data.get('funFact')
-        recipient = data.get('recipient')
-        study_subject=data.get('studySubject')
-
-        print(f"{name}, {email}, {recipient}")
-
-        if generate_and_send_email(email, recipient, name):
-            return jsonify({"status": "success", "message": "Email sent", "data": data}), 200
-
-        return jsonify({"status": "failure", "message": "Email sent", "data": data}), 400
-    
     def monitor_process():
         process = subprocess.Popen(
             ["python3", "./flaskr/mergedOpenCV.py"],
@@ -128,15 +110,6 @@ def create_app(test_config=None):
             stderr=subprocess.PIPE,
             text=True
         )
-
-        for line in process.stdout:
-            socketio.emit('phone_detected',{'message': line.strip()})
-            # if line.strip() == 'phone_detected': 
-            #     socketio.emit('phone_detected', {'message': line.strip()})
-            # elif line.strip() == 'people_detected':
-            #     socketio.emit('people_detected')
-
-        process.communicate()
 
     @app.route("/start", methods=['GET', 'POST'])
     @cross_origin()
@@ -147,25 +120,50 @@ def create_app(test_config=None):
             subprocess_thread.daemon = True
             subprocess_thread.start()
 
-        # if request.method == 'POST':
         return jsonify({"status": "started", "message": "Subprocess started in background"}), 200
     
-    # @socketio.on('connect')
-    # def handle_connect():
-    #     print("A client has connected.")
+    @app.route("/submit-email-data", methods=['POST'])
+    def submit():
+        data = request.get_json()
+        email_data = data
+        name = data.get('name')
+    
+        email=data.get('email')
+        fun_fact = data.get('funFact')
+        recipient = data.get('recipient')
+        study_subject=data.get('studySubject')
 
-    # @socketio.on('disconnect')
-    # def handle_disconnect():
-    #     print("A client has disconnected.")
+        print(email_data)
+        return jsonify({"status": "success", "message": "Email sent", "data": data}), 200
 
-    # @socketio.on('phone_detected')
-    # def handle_phone_detection():
-    #     print(f"Phone detected")
+    @app.route("/send-email", methods=['POST'])
+    @cross_origin()
+    def send():
+        socketio.emit('send-email', {'message': '-1 life, the email is sent'})
+        if generate_and_send_email(email_data.email, email_data.recipient, email_data.name):
+            # return jsonify({"status": "success", "message": "Email sent", "data": data}), 200
+            return("Email sent")
+            
 
-    @app.route("/", methods=['GET'])
+        return ("No email sent")
+    
+
+    @app.route("/play-song", methods=['POST']) 
+    def subtract():
+        socketio.emit('play-song', {'message': '-1 life, the song is played'})
+        return("Song is played")
+
+    @app.route("/get-people", methods=['POST']) 
+    def people():
+        socketio.emit('get-people', {'message': '-1 life, get four people'})
+        return("Get Four People")
+
+         
+    @app.route("/", methods=['POST'])
     @cross_origin()
     def main():
         return("Welcome")
+
     
     @app.route("/predict-survival", methods=['POST'])
     def get_survival_prediction():

@@ -3,6 +3,7 @@ import torch
 import os
 import time
 import sys
+import requests
 
 def yolo_detection():
     yolov5_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../yolov5'))
@@ -27,6 +28,10 @@ def yolo_detection():
     hold_person_message_until = 0
     hold_phone_message_until = 0
 
+    lives = 3
+
+    phone_last_detected = False
+    
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -57,6 +62,27 @@ def yolo_detection():
                     label_text = f'{label} {confidence:.2f}'
                     cv2.putText(frame, label_text, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
+        if phone_detected and not phone_last_detected:
+            print("Phone detected")
+            phone_last_detected = True
+            lives -= 1
+            if (lives == 2):
+                requests.post("http://127.0.0.1:5051/play-song")
+            elif (lives == 1):
+                requests.post("http://127.0.0.1:5051/get-people")
+                text = "Press c and get 4 people on screen!"
+
+                # cv2.putText(image, text, (50, 250), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 255), 3)
+            elif (lives == 0):
+                requests.post("http://127.0.0.1:5051/send-email")
+                # height, width = 500, 1000
+                # image = cv2.imread(cv2.samples.EMPTY_IMAGE)
+                # cv2.putText(image, "GAME OVER", (50, 250), cv2.FONT_HERSHEY_SIMPLEX, 5, (0, 0, 255), 3)
+
+        if not phone_detected and phone_last_detected:
+            print("Phone no longer detected")
+            phone_last_detected = False
+
         if mode == "person" and person_count == 4:
             hold_person_message_until = time.time() + 2
 
@@ -71,16 +97,13 @@ def yolo_detection():
             text_x = (width - text_size[0]) // 2
             text_y = height // 2
             cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-            sys.stdout.write("people_detected")
-            print("people_detected")
+
 
         if mode == "cell phone" and time.time() < hold_phone_message_until:
             text = "Phone Detected!"
             text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 3)[0]
             text_x = (width - text_size[0]) // 2
             text_y = height // 2
-            sys.stdout.write("phone_detected")
-            print("people_detected")
             cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
             
         cv2.putText(frame, f"Mode: {mode.capitalize()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)

@@ -17,7 +17,7 @@ export default function StudyTimer() {
   const [timeLeft, setTimeLeft] = useState(30 * 60)
   const [isRunning, setIsRunning] = useState(true)
   const [lives, setLives] = useState(3)
-  const [isChatActive, setIsChatActive] = useState(false)
+  // const [isChatActive, setIsChatActive] = useState(false)
   const [isChatVisible, setIsChatVisible] = useState(false)
 
   useEffect(() => {
@@ -38,15 +38,27 @@ export default function StudyTimer() {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on('phone_detected', (data: { message: string }) => {
-      console.log('Phone detected:', data.message);
-      // delete a dalgona candy
-      // send a post request to the backend for the different steps
+    socket.on('play-song', (data: { message: string }) => {
+      console.log('Song played:', data.message);
+      setLives(lives - 1);
+      console.log("lives")
     });
 
-    return () => {
-      socket.off('phone_detected');
-    };
+    socket.on('get-people', (data: {message: string}) => {
+      console.log('People detected:', data.message)
+      setLives(lives - 1);
+      console.log("lives")
+    } )
+
+    socket.on('send-email', (data: {message: string}) => {
+      console.log('Send Email:', data.message)
+      setLives(lives - 1);
+      console.log("lives")
+    } )
+
+    // return () => {
+    //   socket.off('phone_detected');
+    // };
   }, [socket]);
   // WEBSOCKET STUFF -------------------------------------
   return (
