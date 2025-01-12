@@ -13,6 +13,7 @@
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-radio-group": "^1.2.2",
     "@shadcn/ui": "^0.0.4",
+    "axios": "^1.7.9",
     "framer-motion": "^11.17.0",
     "lucide-react": "latest",
     "react": "latest",

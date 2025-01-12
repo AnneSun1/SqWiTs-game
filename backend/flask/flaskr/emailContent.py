@@ -20,7 +20,7 @@ def generate_email_content(recipient, name):
         },
         {
             "role": "user",
-            "content": f"Write a cringey email to my {recipient}. This email is from {name}. Make it short and embarassing.",
+            "content": "Write a cringey email to my {recipient}. This email is from {name}. Make it short and embarassing.",
         },
     ]
 
@@ -33,8 +33,9 @@ def generate_email_content(recipient, name):
 
     return response.choices[0].message.content.strip()
 
-if __name__ == '__main__':
-    recipient = input("Who is the email for (crush, mom, professor)? ").strip().lower()
-    name = input("Whats your name: ").strip().lower()
-    email_content = generate_email_content(recipient, name)
-    print(email_content)
+
+# if __name__ == '__main__':
+#     recipient = input("Who is the email for (crush, mom, professor)? ").strip().lower()
+#     name = input("Whats your name: ").strip().lower()
+#     email_content = generate_email_content(recipient, name)
+#     print(email_content)

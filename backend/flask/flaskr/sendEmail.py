@@ -3,8 +3,6 @@ from email.message import EmailMessage
 import smtplib
 from emailContent import generate_email_content
 
-
-
 def send_email(recipient, subject, body):
     try:
         msg = EmailMessage()
@@ -32,9 +30,11 @@ def generate_and_send_email(recipient_email, recipient_type, name):
     email_body += "\nLove, " + name
     if send_email(recipient_email, email_subject, email_body):
         print("Email sent successfully")
+        return True
     else:
         print("Failed to send email")
+        return False
 
 if __name__ == '__main__':
-    generate_and_send_email("rifahsh@gmail.com", "mom", "Max")
+    generate_and_send_email("anne12080901@gmail.com", "mom", "Max")
     
