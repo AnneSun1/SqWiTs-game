@@ -9,11 +9,11 @@ import { useSocket } from './SocketContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-function formatTime(time: number) {
-  const minutes = Math.floor(time / 60)
-  const seconds = time % 60
-  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-}
+// function formatTime(time: number) {
+//   const minutes = Math.floor(time / 60)
+//   const seconds = time % 60
+//   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+// }
 
 export default function StudyTimer() {
   const [timeLeft, setTimeLeft] = useState(30)
