@@ -48,9 +48,23 @@ export default function StudyTimer() {
         </h1>
 
         {/* Timer Display */}
-        <div className="bg-[#2A2A2A]/50 rounded-xl p-12 shadow-lg shadow-green-900/20 backdrop-blur-sm border border-green-500/20">
-          <div className="text-9xl font-mono tracking-wider text-white">
-            {formatTime(timeLeft)}
+        <div className="flex gap-4">
+          <div className="bg-[#2A2A2A]/50 rounded-xl p-8 shadow-lg shadow-green-900/20 backdrop-blur-sm border border-green-500/20 flex flex-col items-center justify-center min-w-[200px] min-h-[200px]">
+            <div className="text-6xl font-mono tracking-wider text-white">
+              {Math.floor(timeLeft / 60).toString().padStart(2, '0')}
+            </div>
+            <div className="text-xl text-white/80 text-center mt-2 font-['Orbitron']">
+              MINUTES
+            </div>
+          </div>
+          
+          <div className="bg-[#2A2A2A]/50 rounded-xl p-8 shadow-lg shadow-green-900/20 backdrop-blur-sm border border-green-500/20 flex flex-col items-center justify-center min-w-[200px] min-h-[200px]">
+            <div className="text-6xl font-mono tracking-wider text-white">
+              {(timeLeft % 60).toString().padStart(2, '0')}
+            </div>
+            <div className="text-xl text-white/80 text-center mt-2 font-['Orbitron']">
+              SECONDS
+            </div>
           </div>
         </div>
       </div>
