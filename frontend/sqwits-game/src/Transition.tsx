@@ -79,8 +79,9 @@ export default function StudyTimer() {
               className="space-y-4 text-center"
             >
               <div className="text-5xl rgb(156, 163, 175); font-Orbitron">
-                STUDY FOR 30 MINUTES. READY?
+                Study for 30 minutes. Ready?
               </div>
+              <br></br>
               <motion.button
                 onClick={() => window.location.href = '/study'}
                 className="px-6 py-3 bg-[#249f9c] hover:bg-[#037a76] rounded-lg font-semibold transition-colors"

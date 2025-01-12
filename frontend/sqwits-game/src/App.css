@@ -200,9 +200,10 @@
 }
 
 .about-description {
-  color: rgb(156, 163, 175);
+  color: rgb(206, 207, 209);
   font-size: 1rem;
   line-height: 1.5;
+  font-family: 'Orbitron';
 }
 
 .about-image-container {
