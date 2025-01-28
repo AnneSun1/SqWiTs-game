@@ -1,4 +1,4 @@
-# Sqwits Game
+# Sqwits Game (3rd @ SheHacks 9 and Best use of Databricks)
 Inspiration 🎯
 
 Shakily I’VE PLAYED THESE GAMES BEFORE! I SAID I’VE PLAYED THESE GAMES BEFORE!
